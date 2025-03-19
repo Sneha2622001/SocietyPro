@@ -48,5 +48,11 @@
                 {{ __('Register') }}
             </x-primary-button>
         </div>
+        <select name="role_id" required>
+    @foreach(App\Models\Role::all() as $role)
+        <option value="{{ $role->id }}">{{ $role->name }}</option>
+    @endforeach
+</select>
+
     </form>
 </x-guest-layout>
