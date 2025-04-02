@@ -80,6 +80,21 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ route('roles') }}">Roles</a>
             </li>
+            {{-- property management --}}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-light" href="#" id="propertyDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Property
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="propertyDropdown" data-bs-auto-close="outside">
+                    <li><a class="dropdown-item text-light" href="{{ route('building') }}">Building</a></li>
+                    <li><a class="dropdown-item text-light" href="{{ route('floor.index') }}">Floor</a></li>
+                    <li><a class="dropdown-item text-light" href="{{ route('units.index') }}">Unit</a></li>
+                    <li><a class="dropdown-item text-light" href="{{ route('residents.index') }}">Resident</a></li>
+                </ul>
+            </li>
+            
+            {{-- property management end --}}
+
           <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
               <div class="pt-2 pb-3 space-y-1">
                   <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -116,3 +131,17 @@
       </div>
     </div>
   </nav>
+
+
+
+  <!-- JavaScript to Prevent Dropdown from Closing -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.dropdown-menu').forEach(function (dropdown) {
+        dropdown.addEventListener('click', function (e) {
+            e.stopPropagation(); // Prevent Bootstrap from closing the dropdown
+        });
+    });
+});
+</script>
+

@@ -8,6 +8,7 @@ use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\FloorController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ResidentController;
+use App\Http\Controllers\ComplaintController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -89,3 +90,25 @@ Route::post('/residents/store', [ResidentController::class, 'store'])->name('res
 Route::get('/residents/edit/{id}', [ResidentController::class, 'edit'])->name('residents.edit');
 Route::put('/residents/update/{id}', [ResidentController::class, 'update'])->name('residents.update');
 Route::delete('/residents/delete/{id}', [ResidentController::class, 'destroy'])->name('residents.destroy');
+
+
+// Routes for Residents
+
+    Route::middleware(['auth'])->group(function () {
+    Route::get('/complaints', [ComplaintController::class, 'userComplaints'])->name('complaints.user');
+    Route::get('/complaints/create', [ComplaintController::class, 'create'])->name('complaints.create');
+    Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
+    Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->name('complaints.destroy');
+});
+
+
+// Routes for Admin & Staff
+
+    Route::middleware(['auth', 'role:admin,staff'])->group(function () {
+    Route::get('/admin/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
+    Route::post('/complaints/{complaint}/update', [ComplaintController::class, 'updateStatus'])->name('complaints.updateStatus');
+    Route::get('/complaints/{complaint}/edit', [ComplaintController::class, 'edit'])->name('complaints.edit');
+    Route::put('/complaints/{complaint}', [ComplaintController::class, 'update'])->name('complaints.update');
+    // Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->name('complaints.destroy');
+    Route::get('/complaints/{complaint}', [ComplaintController::class, 'show'])->name('complaints.show');
+});
