@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Complaint;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\ComplaintStatusChanged;
+use Illuminate\Support\Facades\Mail;
 
 class ComplaintController extends Controller
 {
@@ -52,21 +54,58 @@ class ComplaintController extends Controller
         return view('complaints.show', compact('complaint'));
     }
 
-    // Update complaint status (Admin/Staff only)
-    public function updateStatus(Request $request, Complaint $complaint)
-    {
-        $request->validate([
-            'status' => 'required|in:Pending,In Progress,Resolved',
-        ]);
+
+    // // Update complaint status (Admin/Staff only)
+    // public function updateStatus(Request $request, Complaint $complaint)
+    // {
+    //     $request->validate([
+    //         'status' => 'required|in:Pending,In Progress,Resolved',
+    //     ]);
     
-        // Update the status of the complaint
-        $complaint->status = $request->status;
-        $complaint->save();
+    //     // Update the status of the complaint
+    //     $complaint->status = $request->status;
+    //     $complaint->save();
     
-        // Flash success message
-        return redirect()->route('complaints.index')->with('status', 'Complaint status successfully updated!');
+    //     // Flash success message
+    //     return redirect()->route('complaints.index')->with('status', 'Complaint status successfully updated!');
+    // }
+
+
+public function updateStatus(Request $request, Complaint $complaint)
+{
+    $request->validate([
+        'status' => 'required|in:Pending,In Progress,Resolved',
+    ]);
+
+    // Store the old status before updating
+    $oldStatus = $complaint->status;
+
+    // Update the complaint status
+    $complaint->update(['status' => $request->status]);
+
+    // Notify the user if the status has changed
+    if ($oldStatus !== $complaint->status) {
+        if ($complaint->user) { // Ensure user exists before notifying
+            $complaint->user->notify(new ComplaintStatusChanged($complaint));
+
+            // ✅ Send an email to the user
+            Mail::raw("Your complaint (ID: {$complaint->id}) status has been updated to: {$complaint->status}", function ($message) use ($complaint) {
+                $message->to($complaint->user->email) // Send to the complaint owner
+                        ->subject('Complaint Status Updated');
+            });
+        }
     }
+
+    return back()->with('success', 'Complaint status updated successfully.');
+}
+
     
+
+//     return redirect()->route('complaints.index')->with('success', 'Complaint status updated and notification sent.');
+// }
+
+    
+
 
     // Show edit form
 public function edit(Complaint $complaint)

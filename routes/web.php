@@ -9,6 +9,7 @@ use App\Http\Controllers\FloorController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\ComplaintController;
+use Illuminate\Support\Facades\Auth;
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -99,6 +100,13 @@ Route::delete('/residents/delete/{id}', [ResidentController::class, 'destroy'])-
     Route::get('/complaints/create', [ComplaintController::class, 'create'])->name('complaints.create');
     Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
     Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->name('complaints.destroy');
+
+     // Notification Routes (For Residents)
+     Route::patch('/notifications/{id}/read', function ($id) {
+        $notification = Auth::user()->notifications()->findOrFail($id);
+        $notification->markAsRead();
+        return redirect()->back();
+    })->name('notifications.read');
 });
 
 
