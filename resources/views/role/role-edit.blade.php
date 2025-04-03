@@ -1,49 +1,58 @@
-<x-app-layout>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow-lg border-0 rounded-4">
-                    <!-- Header with a refined color scheme -->
-                    <div class="card-header bg-dark text-light text-center">
-                        <h3 class="fw-bold text-light">Edit Role</h3>
-                    </div>
+<div class="mt-3">
 
-                    <div class="card-body bg-dark p-4">
-                        <!-- Success message -->
-                        @if(session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        @endif
-
-                        <!-- Role Edit Form -->
-                        <form action="{{ route('role.update', $role->id) }}" method="POST" class="needs-validation" novalidate>
-                            @csrf
-                            @method('PUT')
-
-                            <div class="mb-4">
-                                <label for="role_name" class="form-label fw-bold text-light">Role Name</label>
-                                <input type="text" class="form-control @error('role_name') is-invalid @enderror" 
-                                    id="role_name" name="role_name" value="{{ $role->name }}" required>
-                                @error('role_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Action Buttons -->
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary px-4">
-                                    <i class="fas fa-save"></i> Update Role
-                                </button>
-                                <a href="{{ route('roles') }}" class="btn btn-secondary px-4">
-                                    <i class="fas fa-arrow-left"></i> Back
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <!-- Success Message -->
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
-</x-app-layout>
+    @endif
+
+    <!-- Role Edit Form -->
+    <form action="{{ route('role.update', $role->id) }}" method="POST" class="needs-validation p-3" novalidate>
+        @csrf
+        @method('PUT')
+
+        <div class="mb-3">
+            <label for="role_name" class="form-label fw-bold">Role Name</label>
+            <input type="text" class="form-control @error('role_name') is-invalid @enderror" 
+                id="role_name" name="role_name" value="{{ $role->name }}" required>
+            @error('role_name')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-update px-4 fw-bold">
+                <i class="fas fa-save me-1"></i> Update
+            </button>
+            <button type="button" class="btn btn-delete px-4 fw-bold" data-bs-dismiss="offcanvas">
+                <i class="fas fa-times me-1"></i> Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+   
+    .btn-update {
+    border: 2px solid rgb(1, 101, 1); 
+    color: black
+    }
+
+    .btn-update:hover {
+        background-color: rgb(1, 101, 1) !important; 
+        color: white !important; 
+        border: 2px solid  rgb(1, 101, 1); 
+    }
+    .btn-delete {
+        margin-left: 10px;
+        border: 2px solid rgb(169, 5, 5); 
+        color: black; 
+    }
+    .btn-delete:hover {
+        background-color: rgb(169, 5, 5) !important; 
+        color: white !important; 
+        border: 2px solid rgb(169, 5, 5); 
+    }
+</style>

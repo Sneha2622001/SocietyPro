@@ -69,7 +69,7 @@
       </div>
       <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Dark offcanvas</h5>
+          {{-- <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Dark offcanvas</h5> --}}
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
@@ -80,16 +80,22 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ route('roles') }}">Roles</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('users') }}">Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('complaints.user') }}">Complaints</a>
+            </li>
             {{-- property management --}}
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-light" href="#" id="propertyDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle " href="#" id="propertyDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Property
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="propertyDropdown" data-bs-auto-close="outside">
-                    <li><a class="dropdown-item text-light" href="{{ route('building') }}">Building</a></li>
-                    <li><a class="dropdown-item text-light" href="{{ route('floor.index') }}">Floor</a></li>
-                    <li><a class="dropdown-item text-light" href="{{ route('units.index') }}">Unit</a></li>
-                    <li><a class="dropdown-item text-light" href="{{ route('residents.index') }}">Resident</a></li>
+                    <li><a class="dropdown-item " href="{{ route('building') }}">Building</a></li>
+                    <li><a class="dropdown-item " href="{{ route('floor.index') }}">Floor</a></li>
+                    <li><a class="dropdown-item " href="{{ route('units.index') }}">Unit</a></li>
+                    <li><a class="dropdown-item " href="{{ route('residents.index') }}">Resident</a></li>
                 </ul>
             </li>
             
