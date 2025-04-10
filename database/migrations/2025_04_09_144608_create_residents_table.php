@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('residents', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('unit_id');
+            $table->unsignedBigInteger('user_id')->unique();
+            $table->unsignedBigInteger('unit_id')->nullable();
             $table->string('name');
-            $table->string('contact');
+            $table->string('contact')->nullable();
             $table->timestamps();
-            $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
+        
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('unit_id')->references('id')->on('units')->onDelete('set null');
         });
+        
     }
 
     /**

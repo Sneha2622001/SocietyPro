@@ -9,6 +9,7 @@ use App\Http\Controllers\FloorController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\NoticeController;
 use Illuminate\Support\Facades\Auth;
 
 Route::middleware('auth')->group(function () {
@@ -103,7 +104,7 @@ Route::delete('/residents/delete/{id}', [ResidentController::class, 'destroy'])-
 
 // Routes for Admin & Staff
 
-    Route::middleware(['auth', 'role:admin,staff'])->group(function () {
+    Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
     Route::post('/complaints/{complaint}/update', [ComplaintController::class, 'updateStatus'])->name('complaints.updateStatus');
     Route::get('/complaints/{complaint}/edit', [ComplaintController::class, 'edit'])->name('complaints.edit');
@@ -111,3 +112,18 @@ Route::delete('/residents/delete/{id}', [ResidentController::class, 'destroy'])-
     // Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->name('complaints.destroy');
     Route::get('/complaints/{complaint}', [ComplaintController::class, 'show'])->name('complaints.show');
 });
+
+
+//Notice Routes
+
+    Route::get('/notices', [NoticeController::class, 'index'])->name('notices.index');
+
+    
+        Route::get('/notices/create', [NoticeController::class, 'create'])->name('notices.create');
+        Route::post('/notices', [NoticeController::class, 'store'])->name('notices.store');
+ 
+
+    Route::get('/notices/{notice}', [NoticeController::class, 'show'])->name('notices.show');
+    Route::get('/notices/{notice}/edit', [NoticeController::class, 'edit'])->name('notices.edit');
+    Route::put('/notices/{notice}', [NoticeController::class, 'update'])->name('notices.update');
+    Route::delete('/notices/{notice}', [NoticeController::class, 'destroy'])->name('notices.destroy');

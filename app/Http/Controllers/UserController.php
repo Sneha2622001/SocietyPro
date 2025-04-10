@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Resident;
+
+
 class UserController extends Controller
 {
     public function index()
@@ -30,21 +33,36 @@ class UserController extends Controller
         //     'contact' => 'string|max:15',
         //     'role' => 'required|exists:roles,id', // Ensure role exists
         // ]);
+        // dd($request->all());
         $file_path = null; // Default value if no file is uploaded
         if ($request->hasFile('profile')) {
             $file_path = $request->file('profile')->store('public/profiles'); // Store file
             $file_path = str_replace('public/', '', $file_path); // Store relative path
         }
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->name),
             'contact' => $request->contact,
-            'role_id' => $request->role,
             'profile' => $file_path,
             'status' => $request->has('status') ? 1 : 0,
-        ]); 
-
+        ]);
+        
+        $role = Role::find($request->role);
+        if ($role) {
+            $user->assignRole($role->name);
+        }
+        // Check if role is 'resident' and create entry in residents table
+        // $user = User::findOrFail($user->id); // Fetch the user again to get the latest data
+        // dd($user->role->name);
+        // if ($user->role && $user->role->name === 'Resident') {
+        //     Resident::create([
+        //         'user_id' => $user->id,
+        //         'name' => $user->name,
+        //         'contact' => $user->contact,
+        //     ]);
+        // }
+        
         return redirect()->route('users')->with('success', 'User added successfully!');
     }
 
@@ -79,6 +97,14 @@ class UserController extends Controller
         $user->role_id = $request->role;
         $user->status = $request->has('status') ? 1 : 0;;
         $user->save();
+
+        if ($user->role && $user->role->name === 'Resident') {
+            Resident::create([
+                'user_id' => $user->id,
+                'name' => $user->name,
+                'contact' => $user->contact,
+            ]);
+        }
         return redirect()->route('users');
     }
 
