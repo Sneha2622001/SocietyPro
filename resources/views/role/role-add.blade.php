@@ -1,5 +1,4 @@
 <div class="mt-3">
-
         <form action="{{ route('role.store') }}" method="POST" class="needs-validation" novalidate>
             @csrf
 
@@ -16,9 +15,8 @@
             <button type="submit" class="btn btn-save px-4 fw-bold">
                 <i class="fas fa-save me-1"></i> Save
             </button>
-            <button type="button" class="btn btn-cancel px-4 fw-bold" data-bs-dismiss="offcanvas">
-                <i class="fas fa-times me-1"></i> Cancel
-            </button>
+            <button type="button" class="btn btn-secondary"  data-bs-dismiss="offcanvas"
+            aria-label="Close">Cancel</button>
         </div>
     </form>
 </div>

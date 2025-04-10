@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
+
 class RegisteredUserController extends Controller
 {
-    public $role;
     /**
      * Display the registration view.
      */
@@ -36,12 +36,15 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $isFirstUser = User::count() === 0;
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $this->role,
         ]);
+
+        // Assign appropriate role
+        $user->assignRole($isFirstUser ? 'Admin' : 'Authenticated');
 
         event(new Registered($user));
 

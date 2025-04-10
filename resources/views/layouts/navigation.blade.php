@@ -1,26 +1,19 @@
 
-<nav x-data="{ open: false }" class="navbar navbar-dark bg-dark">
+<nav x-data="{ open: false }" class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="justify-content-between flex-grow-1 pe-3">
-          <div class="flex justify-between h-16">
-              <div class="flex">
+          <div class="flex justify-end h-16">
+              {{-- <div class="flex">
                   <!-- Logo -->
                   <div class="m-3 shrink-0 flex items-center">
                       <a href="{{ route('dashboard') }}">
                           <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                       </a>
                   </div>
-
-                  <!-- Navigation Links -->
-                  {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                      <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                          {{ __('Dashboard') }}
-                      </x-nav-link>
-                  </div> --}}
-              </div>
+              </div> --}}
 
               <!-- Settings Dropdown -->
               <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -77,12 +70,14 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('roles') }}">Roles</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('users') }}">Users</a>
-            </li>
+            @role('Admin')
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('roles') }}">Roles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('users') }}">Users</a>
+                </li>
+            @endrole
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('complaints.user') }}">Complaints</a>
             </li>
@@ -98,9 +93,44 @@
                     <li><a class="dropdown-item " href="{{ route('residents.index') }}">Resident</a></li>
                 </ul>
             </li>
-            
             {{-- property management end --}}
-
+            {{-- Facility management --}}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle " href="#" id="facilityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Facility
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="facilityDropdown" data-bs-auto-close="outside">
+                    <li><a class="dropdown-item " href="{{ route('facilities.index') }}">Facilities</a></li>
+                    <li><a class="dropdown-item " href="{{ route('bookings.bookings') }}">Bookings</a></li>
+                </ul>
+            </li>
+            {{-- Facility management end --}}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle " href="#" id="billsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Bills
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="billsDropdown" data-bs-auto-close="outside">
+                    <li><a class="dropdown-item" href="{{ route('bills.index') }}">Maintenance</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle " href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Reports
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="reportsDropdown" data-bs-auto-close="outside">
+                    <li><a class="dropdown-item" href="{{ route('reports.index') }}">Financial Reports</a>
+                </ul>
+            </li>
+            @role('Admin')
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="#" id="settingsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Settings
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="settingsDropdown" data-bs-auto-close="outside">
+                        <li><a class="dropdown-item " href="{{ route('permissions.manage') }}">Role And Permission Settings</a></li>
+                    </ul>
+                </li>
+            @endrole
           <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
               <div class="pt-2 pb-3 space-y-1">
                   <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -141,13 +171,13 @@
 
 
   <!-- JavaScript to Prevent Dropdown from Closing -->
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.dropdown-menu').forEach(function (dropdown) {
         dropdown.addEventListener('click', function (e) {
             e.stopPropagation(); // Prevent Bootstrap from closing the dropdown
         });
     });
-});
+}); --}}
 </script>
 

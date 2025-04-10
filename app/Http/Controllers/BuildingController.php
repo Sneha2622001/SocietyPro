@@ -10,7 +10,6 @@ class BuildingController extends Controller
     function index() {
         $buildings = Building::all();
         return view('buildings.index', compact('buildings'));
-        // return view('buildings.index');
        
     }
 

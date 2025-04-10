@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\MaintenanceBill;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -55,43 +56,9 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id');
     }
 
-    public function isAdmin()
+    public function maintenanceBills()
     {
-        return $this->role === 'Admin';
+        return $this->hasMany(MaintenanceBill::class);
     }
-
-    public function isResident()
-    {
-        return $this->role === 'Resident';
-    }
-
-    public function isSecurity()
-    {
-        return $this->role === 'Security';
-    }
-
-    public function isStaff()
-    {
-        return $this->role === 'Staff';
-    }
-
-    public function resident()
-    {
-        return $this->hasOne(Resident::class);
-    }
-    
-//     protected static function booted()
-// {
-//     static::created(function ($user) {
-//         if ($user->role === 'resident') {
-//             \App\Models\Resident::create([
-//                 'user_id' => $user->id,
-//                 'name' => $user->name,
-//                 'phone' => '', // Can be filled later
-//             ]);
-//         }
-//     });
-// }
-
 
 }

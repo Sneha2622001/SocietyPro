@@ -20,9 +20,6 @@ class NoticeController extends Controller
     // Show Create Form (Admins only)
     public function create()
     {
-        // if (Auth::user()->role->name !== 'admin') {
-        //     abort(403, 'Unauthorized');
-        // }
 
         return view('notices.create');
     }
@@ -30,9 +27,7 @@ class NoticeController extends Controller
     // Store Notice and Send Email to All Residents
     public function store(Request $request)
     {
-        // if (Auth::user()->role->name !== 'admin') {
-        //     abort(403, 'Unauthorized');
-        // }
+
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -46,14 +41,20 @@ class NoticeController extends Controller
         ]);
 
         // Email Notification to All Residents
-        $residents = User::whereHas('role', function ($query) {
-            $query->where('name', 'resident');
-        })->get();
+        $user = new User;
+        $residents = $user->getRoleNames();
+        // Assuming you have a role named 'resident'
+        // You can fetch all residents like this:
+
+        $residents =  User::all()->filter(function ($user) {
+            return $user->hasRole('Resident');
+        });
+
 
         foreach ($residents as $resident) {
             Mail::raw("New Notice: {$notice->title}\n\n{$notice->content}", function ($message) use ($resident) {
                 $message->to($resident->email)
-                        ->subject('New Community Notice');
+                    ->subject('New Community Notice');
             });
         }
 
@@ -69,9 +70,6 @@ class NoticeController extends Controller
     // Edit Form (Admin only)
     public function edit(Notice $notice)
     {
-        // if (Auth::user()->role->name !== 'admin') {
-        //     abort(403, 'Unauthorized');
-        // }
 
         return view('notices.edit', compact('notice'));
     }
@@ -79,10 +77,6 @@ class NoticeController extends Controller
     // Update Notice (Admins only)
     public function update(Request $request, Notice $notice)
     {
-        // if (Auth::user()->role->name !== 'admin') {
-        //     abort(403, 'Unauthorized');
-        // }
-
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -99,10 +93,6 @@ class NoticeController extends Controller
     // Delete Notice (Admins only)
     public function destroy(Notice $notice)
     {
-        // if (Auth::user()->role->name !== 'admin') {
-        //     abort(403, 'Unauthorized');
-        // }
-
         $notice->delete();
         return redirect()->route('notices.index')->with('success', 'Notice deleted successfully.');
     }

@@ -26,9 +26,8 @@
             <button type="submit" class="btn btn-update px-4 fw-bold">
                 <i class="fas fa-save me-1"></i> Update
             </button>
-            <button type="button" class="btn btn-delete px-4 fw-bold" data-bs-dismiss="offcanvas">
-                <i class="fas fa-times me-1"></i> Cancel
-            </button>
+            <button type="button" class="btn btn-secondary"  data-bs-dismiss="offcanvas"
+            aria-label="Close">Cancel</button>
         </div>
     </form>
 </div>

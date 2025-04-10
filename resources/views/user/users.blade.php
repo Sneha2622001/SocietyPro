@@ -1,5 +1,11 @@
 <x-app-layout>
     <div class="container mt-5">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="row justify-content-center">
             <div class="col-md-10">
               <div class="d-flex justify-content-end align-items-center mb-4">
@@ -79,25 +85,19 @@
                     <tbody>
                         @foreach ($users as $user)
                             <tr>
+                                {{-- {{dd($user)}} --}}
+                                <td><img src="{{ asset('storage/' . $user->profile) }}" alt="Profile" class="rounded-circle" width="40" height="40"></td>
                                 <td>{{ $user->id }}</td>
-                                <td>{{ $user->profile }}</td>
                                 <td class="text-nowrap">{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->contact }}</td>
-                                <td>{{ $user->role->name }}</td>
+                                <td>{{ !empty($user->getRoleNames()[0]) ? $user->getRoleNames()[0] : "" }}</td>
                                 <td>{{ $user->status == 1 ? 'Active' : 'Inactive' }}</td>
                                 <td class="d-flex gap-2">
                                     <!-- Action Buttons -->
                                     <a href={{route('user.edit', $user->id)}} class="btn btn-outline-warning btn-sm" data-bs-toggle="offcanvas" data-bs-target="#editUserFormContent" id="loadEditUserForm" aria-controls="offcanvasRight">
                                         Edit
-                                    </a>
-                                    <div class="offcanvas offcanvas-end" tabindex="-1" id="editUserFormContent" aria-labelledby="editUserFormContentLabel">
-                                        <div class="offcanvas-header">
-                                          <h5 class="offcanvas-title" id="editUserFormContentLabel">Edit User</h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                                        </div>
-                                        <div class="offcanvas-body bg-light modaleditUserForm"></div>
-                                    </div>
+                                    </a>                                 
                                     <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
@@ -111,9 +111,13 @@
                     </tbody>
                 </table>
 
-                <!-- Pagination -->
-                {{-- {{ $users->links() }} --}}
-
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="editUserFormContent" aria-labelledby="editUserFormContentLabel">
+                    <div class="offcanvas-header">
+                      <h5 class="offcanvas-title" id="editUserFormContentLabel">Edit User</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body bg-light modaleditUserForm"></div>
+                </div>
             </div> 
         </div> 
     </div> 
@@ -146,7 +150,7 @@
 </script>
 
 <style>
-        h2 {
+    h2 {
         font-size: 22px;
         font-weight: bold;
         text-transform: uppercase;

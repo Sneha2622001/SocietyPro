@@ -7,9 +7,10 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
+        @role('Admin')
         {{-- Post New Notice Button --}}
         <a href="{{ route('notices.create') }}" class="btn btn-primary mb-4">+ Post New Notice</a>
-
+        @endrole
         {{-- Notice List --}}
         @forelse ($notices as $notice)
             <div class="card mb-3 shadow-sm">
@@ -23,18 +24,19 @@
 
                     <div class="d-flex gap-2 mt-2">
                         {{-- Edit Link --}}
-                        <a href="{{ route('notices.edit', $notice) }}" class="btn btn-sm btn-warning">
-                            ✏️ Edit
-                        </a>
+                        @role('Admin')
+                            <a href="{{ route('notices.edit', $notice) }}" class="btn btn-sm btn-warning">
+                                ✏️ Edit
+                            </a>
 
-                        {{-- Delete Link --}}
-                        <a href="#" class="btn btn-sm btn-danger"
-                           onclick="event.preventDefault(); if (confirm('Are you sure you want to delete this notice?')) {
-                               document.getElementById('delete-form-{{ $notice->id }}').submit();
-                           }">
-                            🗑️ Delete
-                        </a>
-
+                            {{-- Delete Link --}}
+                            <a href="#" class="btn btn-sm btn-danger"
+                            onclick="event.preventDefault(); if (confirm('Are you sure you want to delete this notice?')) {
+                                document.getElementById('delete-form-{{ $notice->id }}').submit();
+                            }">
+                                🗑️ Delete
+                            </a>
+                        @endrole
                         {{-- Hidden Delete Form --}}
                         <form id="delete-form-{{ $notice->id }}" action="{{ route('notices.destroy', $notice) }}"
                               method="POST" style="display: none;">
