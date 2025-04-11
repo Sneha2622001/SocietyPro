@@ -1,5 +1,11 @@
 <x-app-layout>
     <div class="container-fluid mt-5 px-3">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <!-- Page Header -->

@@ -37,13 +37,16 @@
                                     <td>{{ $complaint->title }}</td>
                                     <td>{{ $complaint->description }}</td>
                                     <td>
-                                        @if ($complaint->status == 'Pending')
-                                            Pending
-                                        @elseif ($complaint->status == 'In Progress')
-                                            In Progress
-                                        @else
-                                            Resolved
-                                        @endif
+                                        <form action="{{ route('complaints.updateStatus', $complaint->id) }}" method="POST">
+                                            @csrf
+                                            <select name="status"
+                                                class="form-select update-status"
+                                                data-id="{{ $complaint->id }}">
+                                                <option value="Pending" {{ $complaint->status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                                                <option value="In Progress" {{ $complaint->status == 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                                                <option value="Resolved" {{ $complaint->status == 'Resolved' ? 'selected' : '' }}>Resolved</option>
+                                            </select>
+                                        </form>
                                     </td>
                                     <td>
                                         <a href="{{ route('complaints.show', $complaint->id) }}" class="btn bg-body-secondary" type="button" data-bs-toggle="offcanvas" 

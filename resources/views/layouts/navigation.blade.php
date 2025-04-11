@@ -77,50 +77,88 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('users') }}">Users</a>
                 </li>
+            @endrole 
+
+            @role('Admin|Staff|Resident')
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('notices.index') }}">Notices</a>
+                </li>
+            @endrole   
+
+            @role('Admin|Staff')
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('staff.index') }}">Staff</a>
+                </li>
             @endrole
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('complaints.user') }}">Complaints</a>
-            </li>
-            {{-- property management --}}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle " href="#" id="propertyDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Property
-                </a>
-                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="propertyDropdown" data-bs-auto-close="outside">
-                    <li><a class="dropdown-item " href="{{ route('building') }}">Building</a></li>
-                    <li><a class="dropdown-item " href="{{ route('floor.index') }}">Floor</a></li>
-                    <li><a class="dropdown-item " href="{{ route('units.index') }}">Unit</a></li>
-                    <li><a class="dropdown-item " href="{{ route('residents.index') }}">Resident</a></li>
-                </ul>
-            </li>
-            {{-- property management end --}}
-            {{-- Facility management --}}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle " href="#" id="facilityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Facility
-                </a>
-                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="facilityDropdown" data-bs-auto-close="outside">
-                    <li><a class="dropdown-item " href="{{ route('facilities.index') }}">Facilities</a></li>
-                    <li><a class="dropdown-item " href="{{ route('bookings.bookings') }}">Bookings</a></li>
-                </ul>
-            </li>
-            {{-- Facility management end --}}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle " href="#" id="billsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Bills
-                </a>
-                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="billsDropdown" data-bs-auto-close="outside">
-                    <li><a class="dropdown-item" href="{{ route('bills.index') }}">Maintenance</a></li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle " href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Reports
-                </a>
-                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="reportsDropdown" data-bs-auto-close="outside">
-                    <li><a class="dropdown-item" href="{{ route('reports.index') }}">Financial Reports</a>
-                </ul>
-            </li>
+
+            @role('Admin')
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="#" id="propertyDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Property
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="propertyDropdown" data-bs-auto-close="outside">
+                        <li><a class="dropdown-item " href="{{ route('building') }}">Building</a></li>
+                        <li><a class="dropdown-item " href="{{ route('floor.index') }}">Floor</a></li>
+                        <li><a class="dropdown-item " href="{{ route('units.index') }}">Unit</a></li>
+                        <li><a class="dropdown-item " href="{{ route('residents.index') }}">Resident</a></li>
+                    </ul>
+                </li>
+            @endrole
+
+            @role('Admin|Resident')
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="#" id="facilityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Facility
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="facilityDropdown" data-bs-auto-close="outside">
+                        <li><a class="dropdown-item " href="{{ route('facilities.index') }}">Facilities</a></li>
+                        <li><a class="dropdown-item " href="{{ route('bookings.bookings') }}">Bookings</a></li>
+                    </ul>
+                </li>
+            @endrole
+
+            @role('Admin|Resident')
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="#" id="complaintsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Complaints
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="complaintsDropdown" data-bs-auto-close="outside">
+                        @role('Admin')
+                            <li>
+                                <a class="dropdown-item " href="{{ route('complaints.index') }}">Complaints</a>
+                            </li>
+                        @endrole
+                        @role('Admin')
+                            <li class="nav-item">
+                                <a class="dropdown-item" href="{{ route('complaints.user') }}">All Complaints</a>
+                            </li>
+                        @endrole
+                    </ul>
+                </li>
+            @endrole
+
+            @role('Admin|Resident')
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="#" id="billsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Bills
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="billsDropdown" data-bs-auto-close="outside">
+                        <li><a class="dropdown-item" href="{{ route('bills.index') }}">Maintenance</a></li>
+                    </ul>
+                </li>
+            @endrole
+
+            @role('Admin|Staff')
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Reports
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="reportsDropdown" data-bs-auto-close="outside">
+                        <li><a class="dropdown-item" href="{{ route('reports.index') }}">Financial Reports</a>
+                    </ul>
+                </li>
+            @endrole
+
             @role('Admin')
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle " href="#" id="settingsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -131,6 +169,7 @@
                     </ul>
                 </li>
             @endrole
+
           <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
               <div class="pt-2 pb-3 space-y-1">
                   <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">

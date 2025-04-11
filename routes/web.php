@@ -18,6 +18,7 @@ use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BookingPaymentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\StaffController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -102,14 +103,14 @@ Route::middleware(['auth', 'verified', 'roleAndPermission'])->group(function () 
 
     // Complaint Routes
     Route::prefix('complaints')->group(function (){
-        Route::get('', [ComplaintController::class, 'index'])->name('complaints.user');
-        Route::get('/{complaint}', [ComplaintController::class, 'show'])->name('complaints.show');
+        Route::get('', [ComplaintController::class, 'userComplaints'])->name('complaints.user');
         Route::get('/create', [ComplaintController::class, 'create'])->name('complaints.create');
         Route::post('/store', [ComplaintController::class, 'store'])->name('complaints.store');
         Route::get('/{complaint}/edit', [ComplaintController::class, 'edit'])->name('complaints.edit');
         Route::put('/{complaint}', [ComplaintController::class, 'update'])->name('complaints.update');
-        Route::put('/{complaint}/update', [ComplaintController::class, 'updateStatus'])->name('complaints.updateStatus');
-        // Route::delete('/{complaint}/delete', [ComplaintController::class, 'destroy'])->name('complaints.destroy');
+        Route::post('/{complaint}/status', [ComplaintController::class, 'updateStatus'])->name('complaints.updateStatus');
+        Route::get('/{complaint}', [ComplaintController::class, 'show'])->name('complaints.show');
+        Route::delete('/{complaint}/delete', [ComplaintController::class, 'destroy'])->name('complaints.destroy');
     });
 
     // Facility Routes
@@ -170,6 +171,18 @@ Route::middleware(['auth', 'verified', 'roleAndPermission'])->group(function () 
         Route::put('/store/{notice}', [NoticeController::class, 'update'])->name('notices.update');
         Route::delete('/store/{notice}', [NoticeController::class, 'destroy'])->name('notices.destroy');
     });
-});
 
+    Route::prefix('staff')->group(function () {
+        Route::get('/', [StaffController::class, 'index'])->name('staff.index');
+        Route::get('/create', [StaffController::class, 'create'])->name('staff.create');
+        Route::post('/store', [StaffController::class, 'store'])->name('staff.store');
+        Route::get('/{id}', [StaffController::class, 'show'])->name('staff.show'); 
+        Route::get('/{id}/edit', [StaffController::class, 'edit'])->name('staff.edit');
+        Route::put('/{id}/update', [StaffController::class, 'update'])->name('staff.update');
+        Route::put('/{staff}/update', [StaffController::class, 'update'])->name('staff.update');
+        Route::delete('/{id}/delete', [StaffController::class, 'destroy'])->name('staff.destroy');
+    });
+    
+});
+   
 require __DIR__.'/auth.php';

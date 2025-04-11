@@ -14,7 +14,7 @@ class ComplaintController extends Controller
     public function index()
     {
         $complaints = Complaint::latest()->get();
-        return view('complaints.index', compact('complaints'));
+        return view('admin.complaints.index', compact('complaints'));
     }
 
     // Show a resident's complaints
@@ -54,91 +54,62 @@ class ComplaintController extends Controller
         return view('complaints.show', compact('complaint'));
     }
 
+    public function updateStatus(Request $request, Complaint $complaint)
+    {
+        $request->validate([
+            'status' => 'required|in:Pending,In Progress,Resolved',
+        ]);
 
-    // // Update complaint status (Admin/Staff only)
-    // public function updateStatus(Request $request, Complaint $complaint)
-    // {
-    //     $request->validate([
-    //         'status' => 'required|in:Pending,In Progress,Resolved',
-    //     ]);
-    
-    //     // Update the status of the complaint
-    //     $complaint->status = $request->status;
-    //     $complaint->save();
-    
-    //     // Flash success message
-    //     return redirect()->route('complaints.index')->with('status', 'Complaint status successfully updated!');
-    // }
+        $oldStatus = $complaint->status;
+        $complaint->update(['status' => $request->status]);
 
-
-public function updateStatus(Request $request, Complaint $complaint)
-{
-    $request->validate([
-        'status' => 'required|in:Pending,In Progress,Resolved',
-    ]);
-
-    // Store the old status before updating
-    $oldStatus = $complaint->status;
-
-    // Update the complaint status
-    $complaint->update(['status' => $request->status]);
-
-    // Notify the user if the status has changed
-    if ($oldStatus !== $complaint->status) {
-        if ($complaint->user) { // Ensure user exists before notifying
+        if ($oldStatus !== $complaint->status && $complaint->user) {
             $complaint->user->notify(new ComplaintStatusChanged($complaint));
-
-            // ✅ Send an email to the user
             Mail::raw("Your complaint (ID: {$complaint->id}) status has been updated to: {$complaint->status}", function ($message) use ($complaint) {
-                $message->to($complaint->user->email) // Send to the complaint owner
-                        ->subject('Complaint Status Updated');
+                $message->to($complaint->user->email)->subject('Complaint Status Updated');
             });
         }
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Status updated.']);
+        }
+
+        return back()->with('success', 'Complaint status updated successfully.');
     }
-
-    return back()->with('success', 'Complaint status updated successfully.');
-}
-
-    
-
-//     return redirect()->route('complaints.index')->with('success', 'Complaint status updated and notification sent.');
-// }
-
-    
 
 
     // Show edit form
-public function edit(Complaint $complaint)
-{
-    return view('complaints.edit', compact('complaint'));
-}
-
-// Update complaint details
-public function update(Request $request, Complaint $complaint)
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-    ]);
-
-    $complaint->update([
-        'title' => $request->title,
-        'description' => $request->description,
-    ]);
-
-    return redirect()->route('complaints.index')->with('success', 'Complaint updated successfully!');
-}
-
-public function destroy(Complaint $complaint)
-{
-    if (Auth::id() !== $complaint->user_id) {
-        return redirect()->route('complaints.user')->with('error', 'You are not authorized to delete this complaint.');
+    public function edit(Complaint $complaint)
+    {
+        return view('complaints.edit', compact('complaint'));
     }
 
-    $complaint->delete();
+    // Update complaint details
+    public function update(Request $request, Complaint $complaint)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
 
-    return redirect()->route('complaints.user')->with('success', 'Complaint deleted successfully!');
-}
+        $complaint->update([
+            'title' => $request->title,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->back()->with('success', 'Complaint updated successfully!');
+    }
+
+    public function destroy(Complaint $complaint)
+    {
+        if (Auth::id() !== $complaint->user_id) {
+            return redirect()->route('complaints.user')->with('error', 'You are not authorized to delete this complaint.');
+        }
+
+        $complaint->delete();
+
+        return redirect()->route('complaints.user')->with('success', 'Complaint deleted successfully!');
+    }
 
 
 }

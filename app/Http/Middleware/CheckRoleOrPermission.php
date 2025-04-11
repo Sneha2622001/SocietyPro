@@ -142,6 +142,15 @@ class CheckRoleOrPermission
             'notices.update' => 'edit notices',
             'notices.destroy' => 'delete notices',
             'notices.show' => 'view notices',
+
+            // Staff
+            'staff.index' => 'view staff',
+            'staff.create' => 'create staff',           
+            'staff.store' => 'create staff',
+            'staff.edit' => 'edit staff',
+            'staff.update' => 'edit staff',
+            'staff.destroy' => 'delete staff',
+            'staff.show' => 'view staff',
         ];
 
         // Get current route name

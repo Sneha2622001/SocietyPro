@@ -16,20 +16,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create(['name' => 'Authenticated']);
-        Role::create(['name' => 'Admin']);
-        Role::create(['name' => 'Resident']);
-        Role::create(['name' => 'Security']);
-        Role::create(['name' => 'Staff']);
+        // Role::create(['name' => 'Authenticated']);
+        // Role::create(['name' => 'Admin']);
+        // Role::create(['name' => 'Resident']);
+        // Role::create(['name' => 'Security']);
+        // Role::create(['name' => 'Staff']);
 
-        Facility::create(['name' => 'Gym', 'description' => 'A place for physical exercise and fitness activities.', 'price' => 20.00]);
-        Facility::create(['name' => 'Swimming Pool', 'description' => 'A pool for swimming and recreational activities.', 'price' => 15.00]);
-        Facility::create(['name' => 'Parking Lot', 'description' => 'Designated area for parking vehicles.', 'price' => 5.00]);
-        Facility::create(['name' => 'Playground', 'description' => 'An outdoor area for children to play.', 'price' => 10.00]);
-        Facility::create(['name' => 'Tennis Court', 'description' => 'A court for playing tennis.', 'price' => 25.00]);
-        Facility::create(['name' => 'Basketball Court', 'description' => 'A court for playing basketball.', 'price' => 30.00]);
-        Facility::create(['name' => 'Club House', 'description' => 'A building for social gatherings and events.', 'price' => 50.00]);
-        Facility::create(['name' => 'BBQ Area', 'description' => 'An area equipped for barbecuing.', 'price' => 40.00]);
+        // Facility::create(['name' => 'Gym', 'description' => 'A place for physical exercise and fitness activities.', 'price' => 20.00]);
+        // Facility::create(['name' => 'Swimming Pool', 'description' => 'A pool for swimming and recreational activities.', 'price' => 15.00]);
+        // Facility::create(['name' => 'Parking Lot', 'description' => 'Designated area for parking vehicles.', 'price' => 5.00]);
+        // Facility::create(['name' => 'Playground', 'description' => 'An outdoor area for children to play.', 'price' => 10.00]);
+        // Facility::create(['name' => 'Tennis Court', 'description' => 'A court for playing tennis.', 'price' => 25.00]);
+        // Facility::create(['name' => 'Basketball Court', 'description' => 'A court for playing basketball.', 'price' => 30.00]);
+        // Facility::create(['name' => 'Club House', 'description' => 'A building for social gatherings and events.', 'price' => 50.00]);
+        // Facility::create(['name' => 'BBQ Area', 'description' => 'An area equipped for barbecuing.', 'price' => 40.00]);
 
         $permissions = [
             // roles
@@ -77,6 +77,9 @@ class DatabaseSeeder extends Seeder
 
             // Notices
             'view notices', 'create notices', 'edit notices', 'delete notices',
+
+            // Staff
+            'view staff', 'create staff', 'edit staff', 'delete staff',
 
         ];
 

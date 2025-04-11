@@ -8,6 +8,7 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Resident;
+use App\Models\Staff;
 
 
 class UserController extends Controller
@@ -76,6 +77,16 @@ class UserController extends Controller
             $resident->contact = $user->contact;
             $resident->save(); 
         }
+
+        if ($user->hasRole('Staff')) {
+            $staff = new Staff;
+            $staff->user_id = $user->id;
+            $staff->type = $request->type;
+            $staff->shift = $request->shift;
+            $staff->save();
+        }
+        
+
         return redirect()->route('users')->with('success', 'User added successfully!');
     }
 
@@ -134,6 +145,22 @@ class UserController extends Controller
             $resident->save(); 
         }
 
+        if ($user->hasRole('Staff')) {
+            $staff = Staff::where('user_id', $user->id)->first();
+            if (!$staff) {
+                $staff = new Staff;
+            } else {
+                // Update existing staff
+                $staff->type = $request->type;
+                $staff->shift = $request->shift;
+                $staff->save();
+            }
+            $staff->user_id = $user->id;
+            $staff->type = $request->type;
+            $staff->shift = $request->shift;
+            $staff->save();
+        }
+
         return redirect()->route('users')->with('success', 'User updated successfully!');
     }
 
@@ -162,7 +189,9 @@ class UserController extends Controller
                   ->orWhere('contact', 'like', "%{$request->search}%");
         }
         if ($request->filled('role')) {
-            $query->where('role_id', $request->role);
+            $query->whereHas('roles', function ($q) use ($request) {
+                $q->where('id', $request->role);
+            });
         }
         if ($request->filled('status')) {
             $query->where('status', $request->status);

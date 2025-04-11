@@ -1,5 +1,4 @@
-<x-app-layout>
-    <div class="container mt-4">
+<div class="mt-3">
         <h2>Edit Complaint</h2>
 
         <form action="{{ route('complaints.update', $complaint->id) }}" method="POST">
@@ -17,6 +16,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Update Complaint</button>
+            <button type="button" class="btn btn-secondary"  data-bs-dismiss="offcanvas"
+            aria-label="Close">Cancel</button>
         </form>
-    </div>
-</x-app-layout>
+</div>

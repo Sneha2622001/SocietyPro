@@ -34,7 +34,7 @@
                                 @foreach($roles as $key => $role)
                                     <td class="text-center">
                                         <input type="checkbox" name="permissions[{{ $role->id }}][]" value="{{ $permission->id }}"
-                                            {{ $role->hasPermissionTo($permission) ? 'checked' : '' }} {{ $key == 1 ? 'disabled' : '' }}>   
+                                            {{ $role->hasPermissionTo($permission) ? 'checked' : '' }}>   
                                     </td>
                                 @endforeach
                             </tr>
